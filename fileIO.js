@@ -24,11 +24,13 @@ const readFile = (fileName) => {
 }
 
 //returns promise for writing a file
-const writeFile = (FileName) => {
+const writeFile = (fileName, data) => {
     return new Promise((res, rej) => {
-        fs.writeFile(fileName, data, () => {
+        filePath = path.join(__dirname,"files",fileName)
+        fs.writeFile(filePath, data, () => {
             console.log("The file is written")
         })
+        res()
     })
 }
 

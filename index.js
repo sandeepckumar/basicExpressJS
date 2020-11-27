@@ -1,8 +1,13 @@
 const server = require("express");
 const app = server();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 const { readDir, writeFile, fileAccess, readFile } = require("./fileIO")
-const path = require("path")
+const path = require("path");
+
+
+
+app.use(server.json())
+
 // const { fileAccess } = require("./fileIO")
 
 app.get("/", (req, res) => {
@@ -25,7 +30,6 @@ app.get("/showFiles", async (req, res) => {
 
 app.get("/readFile/:fileName", async (req, res) => {
     let fileName = req.params['fileName']
-    console.log(fileName)
     try
     {
         let fileExists = await fileAccess(fileName)
@@ -40,9 +44,24 @@ app.get("/readFile/:fileName", async (req, res) => {
    
 })
 
-// app.post("writeFile", async (req, res) => {
-//     let fileName = path.join(__dirname,"files", req.)
-// })
+app.post("/writeFile", async (req, res) => {
+    console.log(req.body)
+    if (req.body.name && req.body.data)
+    {
+        try
+        {
+            await writeFile(req.body.name, req.body.data)
+            res.status(201).send(`File ${req.body.name} has been created. Use "GET" on /readFile/{name_of_file} to read the file.`)
+        } catch (err)
+        {
+            res.status(500).send(`Error occured:\n ${err}`)
+        }
+        
+    } else
+    {
+        res.status(401).send("Please send body in the following manner:\n{\n'name':'Enter name of the file',\n'data':'Enter data to be written to the file'\n} ")
+    }
+})
 
 app.listen(port, () => { 
     console.log(`Server Started on port ${port}`);

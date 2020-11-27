@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path")
-const { readDir, writeFile, fileAccess, readFile, appendFile, deleteFile } = require("./fileIO")
+const { readDir, writeFile, fileAccess, readFile, appendFile, deleteFile } = require("../promisifiedFs/fileIO")
 
 router.get("/show", async (req, res) => {
     let dirPath = path.resolve("files")

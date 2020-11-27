@@ -48,5 +48,4 @@ const fileAccess = (fileName) => {
     })
 };
 
-
 module.exports = {readDir,writeFile, fileAccess, readFile}
